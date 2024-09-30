@@ -22,13 +22,13 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 891855313009.dkr.ecr.us-east-1.amazonaws.com
 
-      - name: Build and Push Docker image (WebApp)
+      - name: Build and Push Docker image (WebApp) # Image changes here
         run: |
-          docker build -t webapp .
+          docker build -t -f ../laks_repo/Dockerfile . 
           docker tag webapp:latest 891855313009.dkr.ecr.us-east-1.amazonaws.com/webapp:latest
 
-      - name: Build and Push Docker image (MYSQL)
+      - name: Build and Push Docker image (MYSQL) # Image changes here
         run: |
-          docker build -t mysql -f Dockerfile_mysql . 
+          docker build -t mysql -f ../laks_repo/Dockerfile_mysql . 
           docker tag mysql:latest 891855313009.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
           docker push 891855313009.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
