@@ -40,7 +40,6 @@ resource "aws_security_group" "allowHttpSsh" {
     to_port          = 8080
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 
   ingress {
@@ -49,7 +48,6 @@ resource "aws_security_group" "allowHttpSsh" {
     to_port          = 8081
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 
   ingress {
@@ -58,7 +56,6 @@ resource "aws_security_group" "allowHttpSsh" {
     to_port          = 8082
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
