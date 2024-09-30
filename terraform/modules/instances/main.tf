@@ -1,4 +1,4 @@
-// modules/instance/main.tf
+// Main Entry into Infrastructure Provisioning
 
 # EC2 Instance key pair
 resource "aws_key_pair" "ass1" {
@@ -32,7 +32,7 @@ resource "aws_instance" "web_ec2" {
   iam_instance_profile   = "LabInstanceProfile"
   associate_public_ip_address = true
   key_name                    = aws_key_pair.ass1.key_name
-  security_groups = [module.network.aws_security_group.allowHttpSsh.id]
+  vpc_security_group_ids = [var.allowHttpSsh]
 
   tags = {
     Name = "WebAppInstance"
@@ -44,25 +44,3 @@ resource "aws_ecr_repository" "ass1_repos" {
   count = length(var.ecr_repos)
   name  = var.ecr_repos[count.index]
 }
-
-# Create an IAM Instance Profile to use with EC2
-resource "aws_iam_instance_profile" "ec2_instance_profile" {
-  name = "labrole_instance_profile"  # Name for your instance profile
-  role = var.iam_role_name            # Reference the existing IAM role
-}
-
-
-# Creates an Identity and acess management role for our repository
-# resource "aws_iam_role" "ec2_role" {
-#   name = "ecr_access_role"
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [{
-#       Action    = "sts:AssumeRole"
-#       Effect    = "Allow"
-#       Principal = {
-#         Service = "ec2.amazonaws.com"
-#       }
-#     }]
-#   })
-# }

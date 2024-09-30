@@ -23,15 +23,21 @@ variable "ecr_repos" {
   default = ["webapp", "mysql-db"]
 }
 
-variable "instance_profile_name" {
-  description = "The IAM instance profile name"
+variable "allowHttpSsh" {
+  description = "The ID of the security group that allows HTTP and SSH."
   type        = string
-  default = "ecr_access_instance_profile"
-  
 }
 
-variable "iam_role_name" {
-  description = "The IAM role name for EC2 instance"
-  type        = string
-  default     = "LabInstanceProfile"  # Use your existing IAM role name here
-}
+# variable "instance_profile_name" {
+#   description = "The IAM instance profile name"
+#   type        = string
+#   default = "ecr_access_instance_profile"
+  
+# }
+
+# variable "iam_role_name" {
+#   description = "The IAM role name for EC2 instance"
+#   type        = string
+#   default     = "LabInstanceProfile"  # Use your existing IAM role name here
+# }
+

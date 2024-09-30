@@ -6,3 +6,8 @@ output "vpc_id" {
 output "subnet_id" {
   value = data.aws_subnet.subnet.id
 }
+
+# In modules/network/output.tf
+output "allowHttpSsh" {
+  value = aws_security_group.allowHttpSsh.id
+}

@@ -12,5 +12,5 @@ output "ecr_repository_urls" {
 
 # Ouput the security group
 output "security_group_id" {
-  value = aws_security_group.allowHttpSsh.id
+  value = var.allowHttpSsh
 }
