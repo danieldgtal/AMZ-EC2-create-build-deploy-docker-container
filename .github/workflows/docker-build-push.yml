@@ -35,7 +35,7 @@ jobs:
         ECR_REPOSITORY: webapp  # Update to your repository name
         IMAGE_TAG: v0.1
       run: |
-        cd ../laks_repo  # Adjust the directory to where the Dockerfile is located
+        cd laks_repo  # Adjust the directory to where the Dockerfile is located
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -45,6 +45,6 @@ jobs:
         ECR_REPOSITORY: mysql  # Update to your MySQL repository name
         IMAGE_TAG: v0.1
       run: |
-        cd ../laks_repo  # Adjust the directory to where the Dockerfile is located
+        cd laks_repo  # Adjust the directory to where the Dockerfile is located
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile_mysql .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
