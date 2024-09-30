@@ -33,11 +33,14 @@ resource "aws_instance" "web_ec2" {
   associate_public_ip_address = true
   key_name                    = aws_key_pair.ass1.key_name
   vpc_security_group_ids = [var.allowHttpSsh]
+  
+  user_data = file("${path.module}/install_docker.sh")
 
   tags = {
     Name = "WebAppInstance"
   }
 }
+
 
 # Create repositories based on the number of variables 
 resource "aws_ecr_repository" "ass1_repos" {
