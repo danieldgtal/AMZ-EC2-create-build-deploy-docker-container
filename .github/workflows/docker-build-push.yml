@@ -42,7 +42,7 @@ jobs:
     - name: Build and Push Docker image (MYSQL)
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: mysql  # Update to your MySQL repository name
+        ECR_REPOSITORY: mysql-db  # Update to your MySQL repository name
         IMAGE_TAG: v0.1
       run: |
         cd laks_repo  # Adjust the directory to where the Dockerfile is located
