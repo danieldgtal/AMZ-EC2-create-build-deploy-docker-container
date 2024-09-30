@@ -1,34 +1,50 @@
-name: Build and Push to ECR
+name: Deploy to ECR
 
 on:
   pull_request:
     branches:
       - main
     types:
-      - closed # Only triggers when the pull request is merged to main
+      - closed  # Only triggers when the pull request is merged to main
 
 jobs:
+  
   build:
-    if: github.event.pull_request.merged == true # Only if the PR was merged
+    
+    name: Build Image
+    if: github.event.pull_request.merged == true  # Only if the PR was merged
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+    - name: Check out code
+      uses: actions/checkout@v4
 
-      - name: Login to Amazon ECR
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 891855313009.dkr.ecr.us-east-1.amazonaws.com
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}  # Include session token if using temporary credentials
+        AWS_REGION: us-east-1  # Adjust if your region is different
 
-      - name: Build and Push Docker image (WebApp) # Image changes here
-        run: |
-          docker build -t -f ../laks_repo/Dockerfile . 
-          docker tag webapp:latest 891855313009.dkr.ecr.us-east-1.amazonaws.com/webapp:latest
+    - name: Build and Push Docker image (WebApp)
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: webapp  # Update to your repository name
+        IMAGE_TAG: v0.1
+      run: |
+        cd ../laks_repo  # Adjust the directory to where the Dockerfile is located
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Build and Push Docker image (MYSQL) # Image changes here
-        run: |
-          docker build -t mysql -f ../laks_repo/Dockerfile_mysql . 
-          docker tag mysql:latest 891855313009.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
-          docker push 891855313009.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
+    - name: Build and Push Docker image (MYSQL)
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: mysql  # Update to your MySQL repository name
+        IMAGE_TAG: v0.1
+      run: |
+        cd ../laks_repo  # Adjust the directory to where the Dockerfile is located
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile_mysql .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
