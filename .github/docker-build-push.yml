@@ -32,3 +32,5 @@ jobs:
           docker build -t mysql -f ../laks_repo/Dockerfile_mysql . 
           docker tag mysql:latest 891855313009.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
           docker push 891855313009.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
+
+# Nothing changed just need to push this line to reflect a change and trigger image build process so i can complete CLO835 assignment 2
