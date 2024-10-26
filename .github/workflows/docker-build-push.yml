@@ -48,3 +48,4 @@ jobs:
         cd laks_repo  # Adjust the directory to where the Dockerfile is located
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile_mysql .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+# Nothing changed just need to push this line to reflect a change and trigger image build process so i can complete CLO835 assignment also changed aws credentials for the repo
